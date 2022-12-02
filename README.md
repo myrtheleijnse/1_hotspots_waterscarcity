@@ -2,8 +2,11 @@
 
 # Welcome :star2:
 Project: Key drivers and pressures of hotspots in water scarcity
+
 Author: M. Leijnse
+
 Contact: m.leijnse@uu.nl
+
 Organization: Utrecht University
 
 ## Introduction
@@ -11,6 +14,7 @@ Hello, thank you for reading me!
 
 This repository consist of scripts used for the National Geographic World Water Map project. 
 In this repository I'm sharing the code used to generate any output on my identification of the global hotspots in water scarcity and their drivers and pressures.
+All code is generated in the R language.
 
 ## Project organization
 - PG = project-generated
