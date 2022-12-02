@@ -16,6 +16,15 @@ This repository consist of scripts used for the National Geographic World Water 
 In this repository I'm sharing the code used to generate any output on my identification of the global hotspots in water scarcity and their drivers and pressures.
 All code is generated in the R language.
 
+## Download
+- Install R
+- Install RStudio
+
+Download
+```
+git clone git@github.com:myrtheleijnse/1_hotspots_waterscarcity.git
+```
+
 ## Project organization
 - PG = project-generated
 - HW = human-writable
