@@ -17,8 +17,9 @@ In this repository I'm sharing the code used to generate any output on my identi
 All code is generated in the R language.
 
 ## Download
-- Install R
-- Install RStudio
+- Install R version 4.2.1 (2022-06-23 ucrt)
+- Install RStudio 
+	- For dependencies, see [renv.lock](https://github.com/myrtheleijnse/1_hotspots_waterscarcity/renv.lock)
 
 Download
 ```
