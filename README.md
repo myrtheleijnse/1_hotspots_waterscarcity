@@ -1,4 +1,4 @@
-![Dependabot]https://img.shields.io/github/languages/code-size/myrtheleijnse/1_hotspots_waterscarcity
+![Dependabot](https://img.shields.io/github/languages/code-size/myrtheleijnse/1_hotspots_waterscarcity)
 
 # Welcome :star2:
 Project: Key drivers and pressures of hotspots in water scarcity
