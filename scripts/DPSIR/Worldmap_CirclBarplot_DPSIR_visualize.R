@@ -27,6 +27,7 @@ obtain_indicator <- function(sheet, indicator_list, indicator_name_string_singul
   return(df)
 }
 
+
 ### Reading Data ###
 driver_sheet <- read_excel("./raw/DPSIR/DPSIR_analysis.xlsx", sheet = "Driver", range = cell_rows(3:999))
 pressure_sheet <- read_excel("./raw/DPSIR/DPSIR_analysis.xlsx", sheet = "Pressure", range = cell_rows(3:999))
@@ -71,8 +72,11 @@ df_state <- obtain_indicator(state_sheet, states, "state", "states", hotspots_li
 df_impact <- obtain_indicator(impact_sheet, impacts, "impact", "impacts", hotspots_list)
 df_response <- obtain_indicator(response_sheet, responses, "response", "responses", hotspots_list)
 df_DPSIR <- rbind(df_driver, df_pressure, df_state, df_impact, df_response)
+df$DPSIR <- factor(df$DPSIR, levels = c("driver", "pressure", "state", "impact", "response")) # set DPSIR sequence
 
 ### Plotting ###
+
+
 
 ### Testing Plotting ###
 # https://stackoverflow.com/questions/36063043/how-to-plot-barchart-onto-ggplot2-map
