@@ -13,7 +13,6 @@ impact_sheet <- read_excel("./raw/DPSIR/DPSIR_analysis.xlsx", sheet = "Impact", 
 response_sheet <- read_excel("./raw/DPSIR/DPSIR_analysis.xlsx", sheet = "Response", range = cell_rows(3:999))
 
 # list indicators
-# TODO: read directly from xls
 drivers <- c(
   "Population", "Low natural water availability", "Economic growth",
   "Inefficient irrigation system", "Siltation", "Snowpack reduction", "Rainfall seasonality changes",
