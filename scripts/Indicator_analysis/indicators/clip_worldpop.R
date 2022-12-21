@@ -6,7 +6,7 @@ library(sf)
 library(lubridate)
 library(ggplot2)
 
-setwd("C:/Users/5738091/surfdrive3/Data")
+setwd("E:/1_hotspots_waterscarcity/data")
 
 #functions
 nc_to_array <- function(ncfile, ncvariable){
@@ -65,7 +65,8 @@ pop_2010_2019 <- function(shp, pop_2010_2019.array, t, lon, lat, variable) {
 }
 
 #read data
-pop_2010_2019.array <- nc_to_array("Indicators/Population/worldpop/ca_ppp_2010-2019.nc", "Band1") 
+pop_2010_2019.array <- nc_to_array("Indicators/Population/worldpop/ca_ppp_2010-2019.nc", "Band1")
+pop_2000.array <- nc_to_array("Indicators/Population/worldpop/ppp_2000_1km.nc", "Band1") 
 t <- nc_t("Indicators/Population/worldpop/ca_ppp_2010-2019.nc")
 lon <- nc_lon("Indicators/Population/worldpop/ca_ppp_2010-2019.nc")
 lat <- nc_lat("Indicators/Population/worldpop/ca_ppp_2010-2019.nc")

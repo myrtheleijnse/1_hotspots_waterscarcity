@@ -9,7 +9,7 @@ library(lubridate)
 library(ggplot2)
 
 ### Directory ###
-setwd("C:/Users/5738091/surfdrive3/Data")
+setwd("E:/1_hotspots_waterscarcity/Data")
 
 ### Functions ###
 nc_to_array <- function(ncfile, ncvariable){
