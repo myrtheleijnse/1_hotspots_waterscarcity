@@ -82,7 +82,7 @@ landuse_2001_2010 <- function(shp, array, t, lon, lat, variable, class) {
   df$year <- format(strptime(df$year, "%Y"), format = "%Y")
   df$Variable <- variable
   df$unit <- "km2"
-  df$hotspot <- shp$hotspot[1]
+  df$hotspot <- names(shp)
   df$value.ref <- df$value
   #compare to reference year (2001)
   for (i in 1:nrow(df)){

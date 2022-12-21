@@ -41,10 +41,7 @@ ff <- list.files("Data/Water_provinces/Hotspot_Shapefiles/", pattern="\\.shp$", 
 shp_list <- lapply(ff, shapefile)
 hotspots <- c("Irrawaddy", "California", "ChaoPhraya", "Chile", "China", "Euphrates", "Ganges", "Indus", "Japan", "Java", "Jordan",
               "Mekong", "Mexico", "MurrayDarling", "Nile", "Rhine", "Spain", "Sudan", "USHighPlains")
-for (i in 1:length(shp_list)){
-  shp_list[[i]]$hotspot <- hotspots[i]
-  shp_list[[i]] <- unionSpatialPolygons(shp_list[[i]], shp_list[[i]]$hotspot) # Merge polygons by hotspot
-}
+names(shp_list) = hotspots
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
