@@ -25,15 +25,15 @@ obtain_indicator <- function(sheet, indicator_list, indicator_name_string_singul
     #merge indicators (see notes)
     merge1 <- df_region %>% group_by(region) %>% 
       filter(indicator %in% c("Aridification", "Drought frequency", "Rainfall seasonality changes")) %>% 
-      summarize(DPSIR = "driver", indicator = "Rainfall reduction", values = sum(values))
+      summarize(DPSIR = "driver", indicator = "Hydroclimatic change", values = sum(values))
     merge2 <- df_region %>% group_by(region) %>% 
       filter(indicator %in% c("Tourism", "Urbanization", "Domestic water use")) %>% 
       summarize(DPSIR = "pressure", indicator = "Municipal water use", values = sum(values))
     merge3 <- df_region %>% group_by(region) %>% 
-      filter(indicator %in% c("Agri water use", "Crop change/intensification")) %>% 
+      filter(indicator %in% c("Agri water use", "Crop change/intensification", "Horticulture")) %>% 
       summarize(DPSIR = "pressure", indicator = "Agri water use", values = sum(values))
     merge4 <- df_region %>% group_by(region) %>% 
-      filter(indicator %in% c("Livestock water use", "Aquaculture", "Horticulture", "Forestry")) %>% 
+      filter(indicator %in% c("Livestock water use", "Aquaculture", "Forestry")) %>% 
       summarize(DPSIR = "pressure", indicator = "Other farming water use", values = sum(values))
     merge5 <- df_region %>% group_by(region) %>% 
       filter(indicator %in% c("Industrial water use", "Mining")) %>% 
@@ -42,8 +42,8 @@ obtain_indicator <- function(sheet, indicator_list, indicator_name_string_singul
       filter(indicator %in% c("Fallowing acreage", "Reduced food production")) %>% 
       summarize(DPSIR = "impact", indicator = "Reduced food production", values = sum(values))
     merge7 <- df_region %>% group_by(region) %>% 
-      filter(indicator %in% c("Reduced hydroelectricity production", "Costs (pumping/energy)")) %>% 
-      summarize(DPSIR = "impact", indicator = "Increased energy costs", values = sum(values))
+      filter(indicator %in% c("Conflict", "Migration)")) %>% 
+      summarize(DPSIR = "impact", indicator = "Conflict & migration", values = sum(values))
     df_region <- df_region %>% group_by(region) %>% filter(indicator != "Aridification",
                                                            indicator != "Drought frequency", 
                                                            indicator != "Rainfall seasonality changes",
@@ -60,8 +60,8 @@ obtain_indicator <- function(sheet, indicator_list, indicator_name_string_singul
                                                            indicator != "Mining",
                                                            indicator != "Fallowing acreage",
                                                            indicator != "Reduced food production",
-                                                           indicator != "Reduced hydroelectricity production",
-                                                           indicator != "Costs (pumping/energy)"
+                                                           indicator != "Migration",
+                                                           indicator != "Conflict"
                                                            )
     df_region <- rbind(df_region, merge1, merge2, merge3, merge4, merge5, merge6, merge7)
     #relative count
@@ -144,3 +144,7 @@ plot_DPSIR_bar(df_DPSIR, "pressure")
 plot_DPSIR_bar(df_DPSIR, "state")
 plot_DPSIR_bar(df_DPSIR, "impact")
 plot_DPSIR_bar(df_DPSIR, "response")
+
+### summary of total DPSIR outcomes
+df_DPSIR_total <- df_DPSIR %>% group_by(indicator, DPSIR) %>% summarize(values = sum(values),
+                                                                        percentage = sum(values)/1.8)

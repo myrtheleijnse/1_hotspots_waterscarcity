@@ -12,6 +12,7 @@ library(ggplot2)
 setwd("E:/1_hotspots_waterscarcity/data")
 
 ### Functions ###
+# Watergap raster 2010-2019
 nc_to_array <- function(ncfile, ncvariable){
   nc_data <- nc_open(ncfile)
   array <- ncvar_get(nc_data, ncvariable)
@@ -60,6 +61,7 @@ watergap_raster_2010_2019 <- function(array, t, lon, lat, variable) {
   raster_mean <- calc(raster, fun = mean, na.rm = T)
   return(raster_mean)
 }
+
 ### Reading Data ###
 watergap.array <- nc_to_array("WSI/totalWaterGap_annuaTot.nc", "total_gross_demand")
 t <- nc_t("WSI/totalWaterGap_annuaTot.nc")
@@ -69,5 +71,22 @@ lat <- nc_lat("WSI/totalWaterGap_annuaTot.nc")
 ### Execution ###
 watergap_mean <- watergap_raster_2010_2019(watergap.array, t, lon, lat, "Water gap")
 writeRaster(x = watergap_mean, filename = "WSI/RastersForGIS/watergap_mean.tif", driver = "GeoTiff")
+
+# Fossil groundwater abstraction
+fossilabs_mean <- calc(fossilgw_raster[[31:40]], fun = mean, na.rm = T)
+writeRaster(x = fossilabs_mean, filename = "WSI/RastersForGIS/fossilabs_mean.tif", driver = "GeoTiff")
+
+# watergap + fossil groundwater abstraction
+fossilgw_raster <- brick("PCRGLOB_05minbenchmark_global/fossilGroundwaterAbstraction_annuaTot_output.nc")
+watergap_raster <- brick("WSI/totalWaterGap_annuaTot.nc")
+fossilwatergap <- watergap_raster[[1]] + fossilgw_raster[[1]]
+for (i in 2:nlayers(watergap_raster)){
+  fossilwatergap_raster <- watergap_raster[[i]] + fossilgw_raster[[i]]
+  fossilwatergap <- stack(fossilwatergap, fossilwatergap_raster)
+}
+names(fossilwatergap) <- seq(1980, 2019, 1)
+fossilwatergap_2010_2019 <- fossilwatergap[[31:40]]
+fossilwatergap_mean <- calc(fossilwatergap_2010_2019, fun = mean, na.rm = T)
+writeRaster(x = fossilwatergap_mean, filename = "WSI/RastersForGIS/fossilwatergap_mean.tif", driver = "GeoTiff", overwrite=T)
 
 ### Plotting ###
