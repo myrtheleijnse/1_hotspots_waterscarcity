@@ -32,11 +32,19 @@ relative_spaghetti_plot <- function(df, ylab_abs, title_abs, ylab_rel, title_rel
     nrow = 1
   )
 }
-
+spaghetti_plot <- function(df, ylab_abs, title_abs, startyear, endyear) {
+    ggplot(df, aes(year, value, group=hotspot, colour = hotspot)) + 
+      geom_line(lwd=1.5) + 
+      gghighlight(max(value)>-2) +
+      scale_color_viridis_d(option = "H") +
+      scale_x_discrete(breaks=seq(startyear, endyear, 2)) +
+      ylab(ylab_abs) +
+      ggtitle(title_abs) +
+      theme_ipsum(axis_title_size = 12)
+}
 ### Reading Data ###
 # shapefiles
 setwd("E:/1_waterscarcity_hotspots/Data")
-shp <- st_read("Water_provinces/Hotspot_Shapefiles/California.shp")
 ff <- list.files("Water_provinces/Hotspot_Shapefiles/", pattern="\\.shp$", full.names=T)
 shp_list <- lapply(ff, shapefile)
 hotspots <- c("Irrawaddy", "California", "ChaoPhraya", "Chile", "China", "Euphrates", "Ganges", "Indus", "Japan", "Java", "Jordan",
@@ -45,8 +53,10 @@ names(shp_list) = hotspots
 
 # csv
 df_pop <- read.csv("Indicators/Indicator_tables/worldpop_2000_2019.csv")
-df_croplandarea_2 <- read.csv("Indicators/Indicator_tables/MODIS_croplandarea_2001_2010.csv")
-df_urbanarea_2 <- read.csv("Indicators/Indicator_tables/MODIS_urbanarea_2001_2010.csv")
+df_croplandarea <- read.csv("Indicators/Indicator_tables/MODIS_croplandarea_2001_2010.csv")
+df_urbanarea <- read.csv("Indicators/Indicator_tables/MODIS_urbanarea_2001_2010.csv")
+df_watergap <- read.csv("Indicators/Indicator_tables/watergap_1980_2019.csv")
+df_SPEI <- read.csv("Indicators/Indicator_tables/CRU_SPEI_1960_2019.csv")
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
@@ -55,10 +65,10 @@ source("clip_CRUprcp.R")
 source("clip_GDHY_LandUse_V2.R")
 source("PCR_sectoralDemand.R")
 source("clip_SPEI.R")
-source("clip_watergap.R")
-source("clip_landusechange.R") # + values with regards to refyear
+source("clip_watergap_V2.R") # + values with regards to refyear
+source("clip_landusechange_V2.R") # + values with regards to refyear
 # source("clip_WaterQual.R")
-source("clip_worldpop_v2.R")
+source("clip_worldpop_v2.R") # + values with regards to refyear
 # source("clip_snotel_SWE.R") #California only
 # source("clip_GLOBGM_wtd.R")
 # source("clip_IFM_GDP.R")
@@ -162,10 +172,20 @@ relative_spaghetti_plot(df_urbanarea,
                         "Relative urban area",  
                         "Annual urban area per hotspot relative to ", 
                         2001, 2010)
-
 relative_spaghetti_plot(df_pop,
                         "Population count",
                         "Annual total population count per hotspot",
                         "Relative population count",  
                         "Annual population count per hotspot relative to ", 
                         2000, 2019)
+relative_spaghetti_plot(df_watergap,
+                        "Watergap (m)",
+                        "Annual mean watergap per hotspot",
+                        "Relative watergap",  
+                        "Annual mean watergap per hotspot relative to ", 
+                        1980, 2019)
+spaghetti_plot(df_SPEI,
+               "SPEI",
+               "Zonal mean SPEI per hotspot",
+               1960, 2019)
+#TODO fix xlab and gghighlight
