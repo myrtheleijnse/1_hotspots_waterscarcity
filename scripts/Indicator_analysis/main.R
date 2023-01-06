@@ -33,15 +33,16 @@ relative_spaghetti_plot <- function(df, ylab_abs, title_abs, ylab_rel, title_rel
   )
 }
 spaghetti_plot <- function(df, ylab_abs, title_abs, startyear, endyear) {
-    ggplot(df, aes(year, value, group=hotspot, colour = hotspot)) + 
-      geom_line(lwd=1.5) + 
-      gghighlight(max(value)>-2) +
-      scale_color_viridis_d(option = "H") +
-      scale_x_discrete(breaks=seq(startyear, endyear, 2)) +
-      ylab(ylab_abs) +
-      ggtitle(title_abs) +
-      theme_ipsum(axis_title_size = 12)
+  ggplot(df, aes(year, value, group=hotspot, colour = hotspot)) + 
+    geom_line(lwd=1.5) + 
+    gghighlight(hotspot == "California") +
+    scale_color_viridis_d(option = "H") +
+    #scale_x_discrete(breaks=seq(startyear, endyear, 2)) +
+    ylab(ylab_abs) +
+    ggtitle(title_abs) +
+    theme_ipsum(axis_title_size = 12)
 }
+
 ### Reading Data ###
 # shapefiles
 setwd("E:/1_waterscarcity_hotspots/Data")
@@ -57,6 +58,7 @@ df_croplandarea <- read.csv("Indicators/Indicator_tables/MODIS_croplandarea_2001
 df_urbanarea <- read.csv("Indicators/Indicator_tables/MODIS_urbanarea_2001_2010.csv")
 df_watergap <- read.csv("Indicators/Indicator_tables/watergap_1980_2019.csv")
 df_SPEI <- read.csv("Indicators/Indicator_tables/CRU_SPEI_1960_2019.csv")
+df_prcp <- read.csv("Indicators/Indicator_tables/CRU_prcp_1960_2019.csv")
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
@@ -188,4 +190,9 @@ spaghetti_plot(df_SPEI,
                "SPEI",
                "Zonal mean SPEI per hotspot",
                1960, 2019)
-#TODO fix xlab and gghighlight
+relative_spaghetti_plot(df_prcp,
+                        "Precipitation (mm/y)",
+                        "Annual mean precipitation per hotspot",
+                        "Relative precipitation",  
+                        "Annual mean precipitation per hotspot relative to ", 
+                        1960, 2019)

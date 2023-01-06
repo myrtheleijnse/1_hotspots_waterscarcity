@@ -1,6 +1,11 @@
 ########## precipitation dataframe California ##########
 # Author: Myrthe Leijnse
 
+# Data: CRU TS 4.05 dataset
+# Spatialres: 0.5deg/50km
+# Timeref: 1901-2019, monthly
+# Definition: 
+
 ### Libraries ###
 library(raster)
 library(ncdf4)
@@ -9,9 +14,51 @@ library(lubridate)
 library(ggplot2)
 
 ### Directory ###
-setwd("C:/Users/5738091/Documents/2022_PhD/Data/")
+setwd("E:/1_hotspots_waterscarcity/Data")
 
 ### Functions ###
+ncdf_to_df_mean <- function(ncinput, shp, varname, variable, unit, shpcount){
+  b <- brick(ncinput, varname = varname)
+  clip <- mask(crop(b, extent(shp[[shpcount]])), shp[[shpcount]])
+  yearly_clip <- calc(clip[[1:12]], sum)
+  for (i in seq(13,120, 12)) {
+    raster <- calc(clip[[i:(i+11)]], sum)
+    yearly_clip <- stack(yearly_clip, raster)
+  }
+  df <- data.frame(value = cellStats(yearly_clip, "mean"), 
+                   year = unique(as.numeric(format(strptime(getZ(clip), "%Y-%m-%d"), format = "%Y"))),
+                   variable = variable,
+                   unit = unit,
+                   hotspot = names(shp[shpcount]),
+                   value.ref = cellStats(yearly_clip, "mean")) #initialize
+  return (df)
+}
+
+### Reading Data ###
+filelist <- list.files(path = "Indicators/Precipitation/", pattern = "\\.nc$", full.names=T, recursive = F)
+
+### Execution ###
+list_df_prcp <- lapply(filelist, function(x){ncdf_to_df_mean(x, shp_list, "pre", "Precipitation", "mm/y", 1)})
+for (i in 2:length(shp_list)){
+  list_df_prcp_shp <- lapply(filelist, function(x){ncdf_to_df_mean(x, shp_list, "pre", "Precipitation", "mm/y", i)} )
+  list_df_prcp <- append(list_df_prcp, list_df_prcp_shp)
+  print(i)
+}
+df_prcp <- do.call("rbind", list_df_prcp)
+df_prcp <- df_prcp[df_prcp$year >= 1960 & df_prcp$year <= 2019,]
+rownames(df_prcp) <- seq(1,nrow(df_prcp),1)
+
+for (j in seq(1,nrow(df_prcp),60)){
+  for (i in j:(j+59)){
+    df_prcp$value.ref[i] <- df_prcp$value[i]/df_prcp$value[j]
+  }
+}
+
+### Write CSV ###
+write.csv(df_prcp, "Indicators/Indicator_tables/CRU_prcp_1960_2019.csv", row.names=F)
+
+###################################################################################################
+
 nc_to_array <- function(ncfile, ncvariable){
   nc_data <- nc_open(ncfile)
   array <- ncvar_get(nc_data, ncvariable)
