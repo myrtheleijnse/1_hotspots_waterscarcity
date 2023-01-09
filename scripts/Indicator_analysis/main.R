@@ -11,13 +11,14 @@ library(gridExtra)
 library(maptools)
 
 ### Functions ###
+#TODO discrete x axes
 relative_spaghetti_plot <- function(df, ylab_abs, title_abs, ylab_rel, title_rel, startyear, endyear) {
   grid.arrange(
     ggplot(df, aes(year, value, group=hotspot, colour = hotspot)) + 
       geom_line(lwd=1.5) + 
       gghighlight(max(value)>-2) +
       scale_color_viridis_d(option = "H") +
-      scale_x_discrete(breaks=seq(startyear, endyear, 2)) +
+      #scale_x_discrete(breaks=seq(startyear, endyear, 2)) +
       ylab(ylab_abs) +
       ggtitle(title_abs) +
       theme_ipsum(axis_title_size = 12),
@@ -25,7 +26,7 @@ relative_spaghetti_plot <- function(df, ylab_abs, title_abs, ylab_rel, title_rel
       geom_line(lwd=1.5) + 
       gghighlight(max(value)>-2) +
       scale_color_viridis_d(option = "H") +
-      scale_x_discrete(breaks=seq(2001, 2010, 2)) +
+      #scale_x_discrete(breaks=seq(2001, 2010, 2)) +
       ylab(ylab_rel) +
       ggtitle(paste0(title_rel, startyear)) +
       theme_ipsum(axis_title_size = 12),
@@ -45,7 +46,7 @@ spaghetti_plot <- function(df, ylab_abs, title_abs, startyear, endyear) {
 
 ### Reading Data ###
 # shapefiles
-setwd("E:/1_waterscarcity_hotspots/Data")
+setwd("E:/1_hotspots_waterscarcity/Data")
 ff <- list.files("Water_provinces/Hotspot_Shapefiles/", pattern="\\.shp$", full.names=T)
 shp_list <- lapply(ff, shapefile)
 hotspots <- c("Irrawaddy", "California", "ChaoPhraya", "Chile", "China", "Euphrates", "Ganges", "Indus", "Japan", "Java", "Jordan",
@@ -59,6 +60,10 @@ df_urbanarea <- read.csv("Indicators/Indicator_tables/MODIS_urbanarea_2001_2010.
 df_watergap <- read.csv("Indicators/Indicator_tables/watergap_1980_2019.csv")
 df_SPEI <- read.csv("Indicators/Indicator_tables/CRU_SPEI_1960_2019.csv")
 df_prcp <- read.csv("Indicators/Indicator_tables/CRU_prcp_1960_2019.csv")
+df_organic <- read.csv("Indicators/Indicator_tables/DynQual_organic_1980_2019.csv")
+df_watTemp <- read.csv("Indicators/Indicator_tables/DynQual_waterTemperature_1980_2019.csv")
+df_pathogen <- read.csv("Indicators/Indicator_tables/DynQual_pathogen_1980_2019.csv")
+df_salinity <- read.csv("Indicators/Indicator_tables/DynQual_salinity_1980_2019.csv")
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
@@ -196,3 +201,27 @@ relative_spaghetti_plot(df_prcp,
                         "Relative precipitation",  
                         "Annual mean precipitation per hotspot relative to ", 
                         1960, 2019)
+relative_spaghetti_plot(df_organic,
+                        "Biological oxygen demand (mg/L)",
+                        "Annual mean BOD per hotspot",
+                        "Relative biological oxygen demand",  
+                        "Annual mean BOD per hotspot relative to ", 
+                        1980, 2019)
+relative_spaghetti_plot(df_watTemp,
+                        "Water temperature (°C)",
+                        "Annual mean water temperature per hotspot",
+                        "Relative water temperature",  
+                        "Annual mean water temperature per hotspot relative to ", 
+                        1980, 2019)
+relative_spaghetti_plot(df_pathogen,
+                        "Fecal coliform concentration (cfu/100ml)",
+                        "Annual mean pathogen concentration per hotspot",
+                        "Relative fecal coliform concentration",  
+                        "Annual mean pathogen concentration per hotspot relative to ", 
+                        1980, 2019)
+relative_spaghetti_plot(df_salinity,
+                        "Total dissolved solids (mg/L)",
+                        "Annual mean TDS per hotspot",
+                        "Relative total dissolved solids",  
+                        "Annual mean TDS per hotspot relative to ", 
+                        1980, 2019)
