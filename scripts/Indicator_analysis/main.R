@@ -67,6 +67,7 @@ df_salinity <- read.csv("Indicators/Indicator_tables/DynQual_salinity_1980_2019.
 df_domesticWaterUse <- read.csv("Indicators/Indicator_tables/domesticWaterUse_1960_2019.csv")
 df_industryWaterUse <- read.csv("Indicators/Indicator_tables/industryWaterUse_1960_2019.csv")
 df_livestockWaterUse <- read.csv("Indicators/Indicator_tables/livestock_1961_2014.csv")
+df_GDP <- read.csv("Indicators/Indicator_tables/GDP_1980_2015.csv")
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
@@ -252,3 +253,9 @@ relative_spaghetti_plot(df_livestockWaterUse,
                         "Relative livestock demand",  
                         "Annual mean livestock demand per hotspot relative to ", 
                         1961, 2014)
+relative_spaghetti_plot(df_GDP,
+                        "GDP PPP (billion US$ in 2005 year rate)",
+                        "Annual mean GDP per hotspot",
+                        "Relative GDP",  
+                        "Annual mean GDP per hotspot relative to ", 
+                        1980, 2015)

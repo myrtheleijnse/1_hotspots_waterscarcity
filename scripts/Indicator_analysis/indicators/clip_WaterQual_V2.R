@@ -1,7 +1,7 @@
 ########## Water quality ##########
 # Author: Myrthe Leijnse
 
-# # Data: SPEIbase v2.7 based on CRU TS 4.05 dataset
+# Data: SPEIbase v2.7 based on CRU TS 4.05 dataset
 # Spatialres: 5 arcmin/10km
 # Timeref: 1980-2019
 # Definitions:
