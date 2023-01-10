@@ -11,7 +11,7 @@ library(gridExtra)
 library(maptools)
 
 ### Functions ###
-#TODO discrete x axes
+#TODO discrete x axes (as posix or strptime format %y ...)
 relative_spaghetti_plot <- function(df, ylab_abs, title_abs, ylab_rel, title_rel, startyear, endyear) {
   grid.arrange(
     ggplot(df, aes(year, value, group=hotspot, colour = hotspot)) + 
@@ -64,6 +64,9 @@ df_organic <- read.csv("Indicators/Indicator_tables/DynQual_organic_1980_2019.cs
 df_watTemp <- read.csv("Indicators/Indicator_tables/DynQual_waterTemperature_1980_2019.csv")
 df_pathogen <- read.csv("Indicators/Indicator_tables/DynQual_pathogen_1980_2019.csv")
 df_salinity <- read.csv("Indicators/Indicator_tables/DynQual_salinity_1980_2019.csv")
+df_domesticWaterUse <- read.csv("Indicators/Indicator_tables/domesticWaterUse_1960_2019.csv")
+df_industryWaterUse <- read.csv("Indicators/Indicator_tables/industryWaterUse_1960_2019.csv")
+df_livestockWaterUse <- read.csv("Indicators/Indicator_tables/livestock_1961_2014.csv")
 
 # source indicator Rfiles
 setwd("C:/Users/5738091/Documents/2022_PhD/NatGeo_programming/1_hotspots_waterscarcity/scripts/Indicator_analysis/indicators")
@@ -225,3 +228,27 @@ relative_spaghetti_plot(df_salinity,
                         "Relative total dissolved solids",  
                         "Annual mean TDS per hotspot relative to ", 
                         1980, 2019)
+relative_spaghetti_plot(df_salinity,
+                        "Total dissolved solids (mg/L)",
+                        "Annual mean TDS per hotspot",
+                        "Relative total dissolved solids",  
+                        "Annual mean TDS per hotspot relative to ", 
+                        1980, 2019)
+relative_spaghetti_plot(df_domesticWaterUse,
+                        "Gross domestic demand (m/d)",
+                        "Annual mean domestic demand per hotspot",
+                        "Relative domestic demand",  
+                        "Annual mean domestic demand per hotspot relative to ", 
+                        1960, 2019)
+relative_spaghetti_plot(df_industryWaterUse,
+                        "Gross industry demand (m/d)",
+                        "Annual mean industry demand per hotspot",
+                        "Relative industry demand",  
+                        "Annual mean industry demand per hotspot relative to ", 
+                        1960, 2019)
+relative_spaghetti_plot(df_livestockWaterUse,
+                        "Gross livestock demand (m)",
+                        "Annual mean livestock demand per hotspot",
+                        "Relative livestock demand",  
+                        "Annual mean livestock demand per hotspot relative to ", 
+                        1961, 2014)
